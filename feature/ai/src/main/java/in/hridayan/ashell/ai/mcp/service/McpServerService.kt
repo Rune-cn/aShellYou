@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.hridayan.ashell.ai.domain.tool.CommandExecutionManager
 import `in`.hridayan.ashell.ai.mcp.McpConfig
 import `in`.hridayan.ashell.ai.mcp.McpHttpServer
+import `in`.hridayan.ashell.ai.mcp.McpKeepAliveManager
 import `in`.hridayan.ashell.ai.mcp.McpServerController
 import `in`.hridayan.ashell.ai.mcp.McpServerEngine
 import `in`.hridayan.ashell.ai.mcp.McpServerState
