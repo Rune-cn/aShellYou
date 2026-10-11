@@ -1,0 +1,54 @@
+name: Build MCP Server APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'feature/ai/**'
+      - 'core/**'
+      - 'app/**'
+      - 'gradle/**'
+      - '.github/workflows/build_mcp_server_apk.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    name: Build GitHub Debug APK (with local MCP server)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: platform-tools
+
+      - name: Grant execute permission to Gradle
+        run: chmod +x ./gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleGithubDebug --stacktrace
+
+      - name: Upload Debug APK to Artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: ashellyou-mcp-debug-apk
+          path: app/build/outputs/apk/github/debug/*.apk
+          if-no-files-found: error

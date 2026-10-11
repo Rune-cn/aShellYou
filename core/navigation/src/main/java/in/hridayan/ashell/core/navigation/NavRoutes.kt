@@ -131,6 +131,9 @@ sealed class NavRoutes {
     object CloudModelsScreen : NavRoutes()
 
     @Serializable
+    object McpServerScreen : NavRoutes()
+
+    @Serializable
     object GenerateColorSchemeScreen : NavRoutes()
 
     @Serializable

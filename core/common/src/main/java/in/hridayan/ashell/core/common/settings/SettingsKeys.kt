@@ -54,6 +54,7 @@ sealed class SettingsKeys<out T>(
     data object Language : SettingsKeys<Nothing?>("LANGUAGE", null)
     data object Licenses : SettingsKeys<Nothing?>("LICENSES", null)
     data object LookAndFeel : SettingsKeys<Nothing?>("LOOK_AND_FEEL", null)
+    data object McpServer : SettingsKeys<Nothing?>("MCP_SERVER", null)
     data object PrivacyAndSecurity : SettingsKeys<Nothing?>("PRIVACY_AND_SECURITY", null)
     data object PrivacyPolicy : SettingsKeys<Nothing?>("PRIVACY_POLICY", null)
     data object TermsOfService : SettingsKeys<Nothing?>("TERMS_OF_SERVICE", null)
@@ -74,6 +75,16 @@ sealed class SettingsKeys<out T>(
 
     data object AiSkillPackages : SettingsKeys<Boolean>("AI_SKILL_PACKAGES", false)
     data object AiSkillQuickSettings : SettingsKeys<Boolean>("AI_SKILL_QUICK_SETTINGS", true)
+
+    // Local MCP server keys
+    data object McpServerEnabled : SettingsKeys<Boolean>("MCP_SERVER_ENABLED", false)
+    data object McpServerStreamableHttpEnabled :
+        SettingsKeys<Boolean>("MCP_SERVER_STREAMABLE_HTTP_ENABLED", true)
+
+    data object McpServerSseEnabled : SettingsKeys<Boolean>("MCP_SERVER_SSE_ENABLED", true)
+    data object McpServerAllowLanAccess : SettingsKeys<Boolean>("MCP_SERVER_ALLOW_LAN_ACCESS", false)
+    data object McpServerAutoApproveCommands :
+        SettingsKeys<Boolean>("MCP_SERVER_AUTO_APPROVE_COMMANDS", false)
     data object AutoBackupCloudEnabled : SettingsKeys<Boolean>("AUTO_BACKUP_CLOUD_ENABLED", true)
     data object AutoBackupDeleteExisting :
         SettingsKeys<Boolean>("AUTO_BACKUP_DELETE_EXISTING", true)
@@ -140,6 +151,8 @@ sealed class SettingsKeys<out T>(
     data object LogcatBufferLimit :
         SettingsKeys<Int>("LOGCAT_BUFFER_LIMIT_MB", LogcatBufferSize.DEFAULT)
 
+    data object McpServerPort : SettingsKeys<Int>("MCP_SERVER_PORT", 8765)
+
     data object LogcatMode :
         SettingsKeys<Int>("LOGCAT_WORKING_MODE", LogcatWorkingMode.READ_LOGS)
 
@@ -170,6 +183,7 @@ sealed class SettingsKeys<out T>(
     // String Keys
 
     data object LastLocalBackupTime : SettingsKeys<String>("LAST_LOCAL_BACKUP_TIME", "")
+    data object McpServerAuthToken : SettingsKeys<String>("MCP_SERVER_AUTH_TOKEN", "")
     data object OutputSaveDirectory : SettingsKeys<String>(
         "OUTPUT_SAVE_DIRECTORY",
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath

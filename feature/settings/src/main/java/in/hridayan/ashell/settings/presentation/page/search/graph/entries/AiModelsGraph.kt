@@ -27,7 +27,15 @@ internal fun SearchScreenScope.aiModelsGraph(
             icon(R.drawable.ic_cloud_model)
         }
 
+        entry(key = SettingsKeys.McpServer) {
+            title(R.string.mcp_server)
+            description(R.string.des_mcp_server)
+            icon(R.drawable.ic_mcp_server)
+        }
+
         cloudModelsGraph(navController)
+
+        mcpServerGraph(navController)
 
         entry(key = SettingsKeys.AiSkillCommandExecution) {
             title(R.string.command_execution)

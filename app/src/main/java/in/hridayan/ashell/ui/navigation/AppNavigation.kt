@@ -30,6 +30,7 @@ import `in`.hridayan.ashell.adbsideload.presentation.screens.AdbSideloadScreen
 import `in`.hridayan.ashell.ai.presentation.screens.AiChatScreen
 import `in`.hridayan.ashell.ai.presentation.screens.AiModelsScreen
 import `in`.hridayan.ashell.ai.presentation.screens.CloudModelsScreen
+import `in`.hridayan.ashell.ai.presentation.screens.McpServerScreen
 import `in`.hridayan.ashell.commandexamples.presentation.screens.CommandExamplesScreen
 import `in`.hridayan.ashell.core.common.LocalAnimatedContentScope
 import `in`.hridayan.ashell.core.common.domain.model.SharedTextHolder
@@ -307,6 +308,10 @@ fun AppNavigation(
 
             composable<NavRoutes.CloudModelsScreen> {
                 CloudModelsScreen()
+            }
+
+            composable<NavRoutes.McpServerScreen> {
+                McpServerScreen()
             }
 
             composable<NavRoutes.GenerateColorSchemeScreen> {

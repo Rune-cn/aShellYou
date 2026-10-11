@@ -39,6 +39,14 @@ class CommandExecutionManager @Inject constructor(
     private val _runningTasks = MutableStateFlow<List<RunningTask>>(emptyList())
     val runningTasks: StateFlow<List<RunningTask>> = _runningTasks.asStateFlow()
 
+    /**
+     * When `true`, every permission request is granted automatically without showing the
+     * in-app approval prompt. This is used by the local MCP server, which has no UI to
+     * approve requests, and is toggled by the user through the MCP server settings.
+     */
+    @Volatile
+    var autoApproveAll: Boolean = false
+
     private val safeCommands = setOf(
         "ls", "cat", "grep", "find", "dumpsys", "logcat", "getprop",
         "ps", "pwd", "date", "whoami", "echo", "which", "whereis",
@@ -53,6 +61,12 @@ class CommandExecutionManager @Inject constructor(
 
         // Auto-allow completely safe read-only commands
         if (baseCommand.isNotBlank() && safeCommands.contains(baseCommand)) {
+            return PermissionResult.GRANTED
+        }
+
+        // The local MCP server runs without a UI, so when auto-approve is enabled every
+        // request is granted immediately instead of suspending forever on a prompt.
+        if (autoApproveAll) {
             return PermissionResult.GRANTED
         }
 

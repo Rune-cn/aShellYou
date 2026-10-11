@@ -121,6 +121,10 @@
 > Includes a sleek dark mode designed to save battery and look great on AMOLED screens.
 </br>
 
+🔌 **Local MCP Server**
+> Expose aShell You's on-device shell tools to external AI clients such as Claude Desktop or Cursor through the Model Context Protocol, over Streamable HTTP or the legacy HTTP+SSE transport. See [docs/mcp-server.md](docs/mcp-server.md).
+</br>
+
 🎉 **Packed with Extras**
 > Tons of small but useful features to enhance your productivity and make ADB power-user workflows smoother.
 

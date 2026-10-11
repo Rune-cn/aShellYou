@@ -95,6 +95,13 @@ fun AiModelsScreen(
                         icon(R.drawable.ic_cloud_model)
                         onClick { navController.navigate(NavRoutes.CloudModelsScreen) }
                     }
+
+                    clickableItem(SettingsKeys.McpServer) {
+                        title(R.string.mcp_server)
+                        description(R.string.des_mcp_server)
+                        icon(R.drawable.ic_mcp_server)
+                        onClick { navController.navigate(NavRoutes.McpServerScreen) }
+                    }
                 }
 
                 group(R.string.agent_skills) {
