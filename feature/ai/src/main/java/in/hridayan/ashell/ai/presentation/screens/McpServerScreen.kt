@@ -2,7 +2,6 @@
 
 package `in`.hridayan.ashell.ai.presentation.screens
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.hridayan.ashell.ai.presentation.components.McpEndpointCard
 import `in`.hridayan.ashell.ai.presentation.components.McpStatusCard
 import `in`.hridayan.ashell.ai.presentation.viewmodel.McpServerViewModel
 import `in`.hridayan.ashell.core.common.settings.LocalSettings
@@ -167,25 +167,28 @@ fun McpServerScreen(
 
                     if (streamableHttpEnabled) {
                         item(key = "mcp_endpoint_streamable") {
-                            EndpointRow(
+                            McpEndpointCard(
                                 label = stringResource(R.string.mcp_endpoint_streamable_http),
                                 value = "$baseUrl/mcp",
+                                modifier = Modifier.padding(horizontal = 15.dp, vertical = 6.dp),
                             )
                         }
                     }
 
                     if (sseEnabled) {
                         item(key = "mcp_endpoint_sse") {
-                            EndpointRow(
+                            McpEndpointCard(
                                 label = stringResource(R.string.mcp_endpoint_sse),
                                 value = "$baseUrl/sse",
+                                modifier = Modifier.padding(horizontal = 15.dp, vertical = 6.dp),
                             )
                         }
 
                         item(key = "mcp_endpoint_messages") {
-                            EndpointRow(
+                            McpEndpointCard(
                                 label = stringResource(R.string.mcp_endpoint_messages),
                                 value = "$baseUrl/messages",
+                                modifier = Modifier.padding(horizontal = 15.dp, vertical = 6.dp),
                             )
                         }
                     }
@@ -253,27 +256,6 @@ private fun SectionHeader(text: String) {
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 8.dp),
     )
-}
-
-@Composable
-private fun EndpointRow(label: String, value: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 15.dp, vertical = 4.dp)
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontFamily = FontFamily.Monospace,
-            color = MaterialTheme.colorScheme.primary,
-        )
-    }
 }
 
 @Composable
