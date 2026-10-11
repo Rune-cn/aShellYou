@@ -1393,7 +1393,7 @@
 
     <!-- Local MCP server -->
     <string name="mcp_server" comment="Settings item title for the local MCP server">MCP Server</string>
-    <string name="des_mcp_server" comment="Settings item description for the local MCP server">Expose on-device shell tools to external AI clients over the Model Context Protocol</string>
+    <string name="des_mcp_server" comment="Settings item description for the local MCP server">Expose on-device shell tools so MCP clients (Claude Desktop, Cursor, …) can call them</string>
     <string name="mcp_server_enabled" comment="Toggle title to enable the local MCP server">Enable MCP server</string>
     <string name="des_mcp_server_enabled" comment="Toggle description for enabling the local MCP server">Run a local Model Context Protocol server in the background</string>
     <string name="mcp_server_status" comment="Shows whether the MCP server is running">Status</string>
@@ -1402,9 +1402,9 @@
     <string name="mcp_status_error" comment="Shown when the MCP server failed to start. %1$s is the error message.">Failed to start: %1$s</string>
     <string name="mcp_transport" comment="Header for MCP transport options">Transports</string>
     <string name="mcp_streamable_http">Streamable HTTP</string>
-    <string name="des_mcp_streamable_http">Single HTTP endpoint at /mcp, for current MCP clients (2025-03-26 and newer)</string>
+    <string name="des_mcp_streamable_http">Single HTTP endpoint at /mcp. Stateless, no handshake — the standard transport since MCP 2026-07-28</string>
     <string name="mcp_sse">HTTP + SSE</string>
-    <string name="des_mcp_sse">Legacy /sse and /messages endpoints, for 2024-11-05 clients</string>
+    <string name="des_mcp_sse">Deprecated /sse and /messages endpoints, kept so older clients (2024-11-05) still work</string>
     <string name="mcp_port" comment="Label for the MCP server TCP port">Port</string>
     <string name="des_mcp_port">TCP port the MCP server listens on</string>
     <string name="mcp_auth_token" comment="Label for the optional bearer token">Bearer token</string>
@@ -1421,7 +1421,7 @@
     <string name="mcp_lan_hint">LAN access is enabled. Replace 127.0.0.1 with this device\'s LAN IP address in the URLs above.</string>
     <string name="mcp_exposed_tools" comment="Header listing the tools exposed over MCP">Exposed tools</string>
     <string name="mcp_no_tools">No tools are exposed yet. Enable agent skills under AI &amp; Models to expose them over MCP.</string>
-    <string name="mcp_client_hint">Add one of the endpoints above to your MCP client (for example Claude Desktop, Cursor, or MCP Inspector).</string>
+    <string name="mcp_client_hint">Add one of the endpoints above to your MCP client (for example Claude Desktop, Cursor, or MCP Inspector). The server speaks both the current revision (2026-07-28) and older ones.</string>
     <string name="mcp_running_notification_title">MCP server running</string>
     <string name="mcp_running_notification_text" comment="%1$d is the TCP port">Listening on port %1$d</string>
 </resources>

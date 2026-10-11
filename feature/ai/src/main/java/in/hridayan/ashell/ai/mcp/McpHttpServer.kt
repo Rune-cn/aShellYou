@@ -4,6 +4,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.Url
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.ApplicationCallPipeline
@@ -23,19 +24,19 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.sse.SSE
 import io.ktor.server.sse.sse
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonPrimitive
 import java.util.UUID
 
 private const val SESSION_HEADER = "Mcp-Session-Id"
+private const val NO_BUFFERING_HEADER = "X-Accel-Buffering"
 
 /**
  * Embedded Ktor (CIO) server exposing the MCP engine over HTTP.
  *
- * Two transports can be enabled independently:
- *  - **Streamable HTTP** (`/mcp`): the current transport, a single endpoint that answers a
- *    POST with either JSON or an SSE stream.
- *  - **HTTP + SSE** (`/sse` + `/messages`): the legacy 2024-11-05 transport.
+ * - **Streamable HTTP** (`/mcp`, POST) is the standard transport. Per the `2026-07-28`
+ *   revision it is the only endpoint needed: requests are stateless, sessions and the GET
+ *   stream are gone.
+ * - **HTTP + SSE** (`/sse` + `/messages`) is the deprecated `2024-11-05` transport, kept for
+ *   older clients.
  */
 class McpHttpServer(
     private val config: McpConfig,
@@ -74,8 +75,11 @@ class McpHttpServer(
                 allowHeader(HttpHeaders.Authorization)
                 allowHeader(HttpHeaders.ContentType)
                 allowHeader(HttpHeaders.Accept)
+                allowHeader(HttpHeaders.Origin)
+                allowHeader(McpProtocol.HEADER_PROTOCOL_VERSION)
+                allowHeader(McpProtocol.HEADER_METHOD)
+                allowHeader(McpProtocol.HEADER_NAME)
                 allowHeader(SESSION_HEADER)
-                allowHeader("MCP-Protocol-Version")
                 exposeHeader(SESSION_HEADER)
                 allowMethod(HttpMethod.Post)
                 allowMethod(HttpMethod.Get)
@@ -85,18 +89,20 @@ class McpHttpServer(
 
             get("/") {
                 call.respondText(
-                    "aShellYou MCP server. Endpoints: /mcp (Streamable HTTP), " +
-                        "/sse + /messages (HTTP+SSE).",
+                    "aShellYou MCP server. MCP endpoint: POST /mcp. " +
+                        "Deprecated HTTP+SSE transport: /sse + /messages.",
                     ContentType.Text.Plain
                 )
             }
 
             if (config.streamableHttpEnabled) {
-                post("/mcp") { call.handleStreamableHttpPost() }
+                post("/mcp") { call.handleMcpPost() }
+
+                // The 2026-07-28 revision removed the GET stream endpoint.
                 get("/mcp") {
                     call.respond(
                         HttpStatusCode.MethodNotAllowed,
-                        "Use POST for the Streamable HTTP transport"
+                        "This MCP endpoint only accepts POST"
                     )
                 }
                 delete("/mcp") { call.respond(HttpStatusCode.NoContent) }
@@ -129,42 +135,65 @@ class McpHttpServer(
                         call.respond(HttpStatusCode.NotFound, "Unknown session")
                         return@post
                     }
-                    val payload = mcpEngine.handleMessage(call.receiveText())
+
+                    val incoming = McpIncoming(
+                        body = call.receiveText(),
+                        protocolVersionHeader =
+                            call.request.headers[McpProtocol.HEADER_PROTOCOL_VERSION]
+                    )
                     call.respond(HttpStatusCode.Accepted)
-                    if (payload != null) channel.trySend(payload)
+                    (mcpEngine.handle(incoming) as? McpResponse.Reply)
+                        ?.let { channel.trySend(it.body) }
                 }
             }
         }
     }
 
-    private suspend fun ApplicationCall.handleStreamableHttpPost() {
-        val body = receiveText()
-        val payload = mcpEngine.handleMessage(body)
-
-        if (payload == null) {
-            // Notification or response: acknowledge without a body.
-            respond(HttpStatusCode.Accepted)
+    private suspend fun ApplicationCall.handleMcpPost() {
+        // DNS-rebinding protection: reject browser calls from foreign origins unless the user
+        // explicitly exposed the server to the local network.
+        val origin = request.headers[HttpHeaders.Origin]
+        if (origin != null && !config.allowLanAccess && !isLocalOrigin(origin)) {
+            respondText("Forbidden origin", ContentType.Text.Plain, HttpStatusCode.Forbidden)
             return
         }
 
-        if (isInitializeRequest(body)) {
-            response.headers.append(SESSION_HEADER, UUID.randomUUID().toString())
-        }
-
         val accept = request.headers[HttpHeaders.Accept].orEmpty()
-        val wantsSse = accept.contains(ContentType.Text.EventStream.contentType) &&
-            !accept.contains(ContentType.Application.Json.contentType)
+        val incoming = McpIncoming(
+            body = receiveText(),
+            protocolVersionHeader = request.headers[McpProtocol.HEADER_PROTOCOL_VERSION]
+        )
 
-        if (wantsSse) {
-            respondText(
-                text = "event: message\ndata: $payload\n\n",
-                contentType = ContentType.Text.EventStream
-            )
-        } else {
-            respondText(text = payload, contentType = ContentType.Application.Json)
+        when (val result = mcpEngine.handle(incoming)) {
+            is McpResponse.Accepted -> respond(HttpStatusCode.Accepted)
+
+            is McpResponse.Reply -> {
+                val status = HttpStatusCode.fromValue(result.status)
+                val wantsSse = status == HttpStatusCode.OK &&
+                    accept.contains(ContentType.Text.EventStream.contentType) &&
+                    !accept.contains(ContentType.Application.Json.contentType)
+
+                if (wantsSse) {
+                    // Ask reverse proxies not to buffer, so events reach the client promptly.
+                    response.headers.append(NO_BUFFERING_HEADER, "no")
+                    respondText(
+                        text = "event: message\ndata: ${result.body}\n\n",
+                        contentType = ContentType.Text.EventStream,
+                        status = status
+                    )
+                } else {
+                    respondText(
+                        text = result.body,
+                        contentType = ContentType.Application.Json,
+                        status = status
+                    )
+                }
+            }
         }
     }
 
-    private fun isInitializeRequest(body: String): Boolean =
-        McpProtocol.parse(body)?.get("method")?.jsonPrimitive?.contentOrNull == "initialize"
+    private fun isLocalOrigin(origin: String): Boolean {
+        val host = runCatching { Url(origin).host }.getOrNull() ?: return false
+        return host == "localhost" || host == "127.0.0.1" || host == "::1" || host == "[::1]"
+    }
 }
