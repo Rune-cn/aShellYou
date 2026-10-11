@@ -90,9 +90,14 @@ class McpServerEngine @Inject constructor(
         }
     }
 
-    private suspend fun toolsListResult(): JsonObject = buildJsonObject {
-        putJsonArray("tools") {
-            toolBridge.listTools().forEach { add(McpProtocol.toolDescriptor(it)) }
+    private suspend fun toolsListResult(): JsonObject {
+        // Read the tools before entering the non-inline builder lambda: `putJsonArray`
+        // takes a plain lambda, in which suspend calls are not allowed.
+        val tools = toolBridge.listTools()
+        return buildJsonObject {
+            putJsonArray("tools") {
+                tools.forEach { add(McpProtocol.toolDescriptor(it)) }
+            }
         }
     }
 

@@ -11,7 +11,7 @@ import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.plugins.cors.CORS
+import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import io.ktor.server.request.receiveText
@@ -39,7 +39,7 @@ private const val SESSION_HEADER = "Mcp-Session-Id"
  */
 class McpHttpServer(
     private val config: McpConfig,
-    private val engine: McpServerEngine,
+    private val mcpEngine: McpServerEngine,
     private val sessions: McpSseSessionStore
 ) {
     fun build(): EmbeddedServer<*, *> =
@@ -48,20 +48,6 @@ class McpHttpServer(
         }
 
     private fun Application.mcpModule() {
-        install(CORS) {
-            anyHost()
-            allowHeader(HttpHeaders.Authorization)
-            allowHeader(HttpHeaders.ContentType)
-            allowHeader(HttpHeaders.Accept)
-            allowHeader(SESSION_HEADER)
-            allowHeader("MCP-Protocol-Version")
-            exposeHeader(SESSION_HEADER)
-            allowMethod(HttpMethod.Post)
-            allowMethod(HttpMethod.Get)
-            allowMethod(HttpMethod.Delete)
-            allowMethod(HttpMethod.Options)
-        }
-
         install(SSE)
 
         // Optional bearer-token gate for every MCP endpoint.
@@ -82,6 +68,21 @@ class McpHttpServer(
         }
 
         routing {
+            // CORS is a route-scoped plugin, so it is installed on the routing node.
+            install(CORS) {
+                anyHost()
+                allowHeader(HttpHeaders.Authorization)
+                allowHeader(HttpHeaders.ContentType)
+                allowHeader(HttpHeaders.Accept)
+                allowHeader(SESSION_HEADER)
+                allowHeader("MCP-Protocol-Version")
+                exposeHeader(SESSION_HEADER)
+                allowMethod(HttpMethod.Post)
+                allowMethod(HttpMethod.Get)
+                allowMethod(HttpMethod.Delete)
+                allowMethod(HttpMethod.Options)
+            }
+
             get("/") {
                 call.respondText(
                     "aShellYou MCP server. Endpoints: /mcp (Streamable HTTP), " +
@@ -128,7 +129,7 @@ class McpHttpServer(
                         call.respond(HttpStatusCode.NotFound, "Unknown session")
                         return@post
                     }
-                    val payload = engine.handleMessage(call.receiveText())
+                    val payload = mcpEngine.handleMessage(call.receiveText())
                     call.respond(HttpStatusCode.Accepted)
                     if (payload != null) channel.trySend(payload)
                 }
@@ -138,7 +139,7 @@ class McpHttpServer(
 
     private suspend fun ApplicationCall.handleStreamableHttpPost() {
         val body = receiveText()
-        val payload = engine.handleMessage(body)
+        val payload = mcpEngine.handleMessage(body)
 
         if (payload == null) {
             // Notification or response: acknowledge without a body.
