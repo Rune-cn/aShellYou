@@ -159,31 +159,31 @@ class McpServerEngine @Inject constructor(
         method: String,
         request: JsonObject
     ): McpResponse {
-        val result = try {
+        return try {
             when (method) {
-                "initialize" -> McpProtocol.result(id, initializeResult(request), modern = false)
-                "ping" -> McpProtocol.result(id, buildJsonObject { }, modern = false)
-                "tools/list" -> McpProtocol.result(id, toolsListResult(modern = false), modern = false)
+                "initialize" -> legacyReply(id, initializeResult(request))
+                "ping" -> legacyReply(id, buildJsonObject { })
+                "tools/list" -> legacyReply(id, toolsListResult(modern = false))
                 "tools/call" -> toolsCall(id, request, modern = false)
                 "resources/list" ->
-                    McpProtocol.result(id, listResult("resources", modern = false), modern = false)
+                    legacyReply(id, listResult("resources", modern = false))
 
                 "resources/templates/list" ->
-                    McpProtocol.result(id, listResult("resourceTemplates", modern = false), modern = false)
+                    legacyReply(id, listResult("resourceTemplates", modern = false))
 
-                "prompts/list" -> McpProtocol.result(id, listResult("prompts", modern = false), modern = false)
-                "logging/setLevel" -> McpProtocol.result(id, buildJsonObject { }, modern = false)
-                else -> McpProtocol.error(
-                    id,
-                    McpProtocol.METHOD_NOT_FOUND,
-                    "Method not found: $method"
+                "prompts/list" -> legacyReply(id, listResult("prompts", modern = false))
+                "logging/setLevel" -> legacyReply(id, buildJsonObject { })
+                else -> encoded(
+                    McpProtocol.error(id, McpProtocol.METHOD_NOT_FOUND, "Method not found: $method")
                 )
             }
         } catch (e: Exception) {
-            McpProtocol.error(id, McpProtocol.INTERNAL_ERROR, e.message ?: "Internal error")
+            encoded(McpProtocol.error(id, McpProtocol.INTERNAL_ERROR, e.message ?: "Internal error"))
         }
-        return McpResponse.Reply(McpProtocol.encode(result))
     }
+
+    private fun legacyReply(id: JsonElement, result: JsonObject): McpResponse =
+        McpResponse.Reply(McpProtocol.encode(McpProtocol.result(id, result, modern = false)))
 
     private fun initializeResult(request: JsonObject): JsonObject {
         val requested = (request["params"] as? JsonObject)
