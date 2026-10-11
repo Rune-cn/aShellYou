@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Fullscreen
+import androidx.compose.material.icons.rounded.PowerSettingsNew
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -90,7 +93,7 @@ fun McpKeepAliveScreen(
                     switchItem(SettingsKeys.McpServerKeepAlive) {
                         title(R.string.mcp_keep_alive_enabled)
                         description(R.string.des_mcp_keep_alive_enabled)
-                        icon(R.drawable.ic_mcp_server)
+                        icon(Icons.Rounded.PowerSettingsNew)
                     }
                 }
 
@@ -109,7 +112,7 @@ fun McpKeepAliveScreen(
                         description {
                             permissionLabel(permissions.notifications)
                         }
-                        icon(R.drawable.ic_mcp_server)
+                        icon(R.drawable.ic_notification)
                         onClick {
                             if (permissions.notifications) {
                                 settingsLauncher.launch(viewModel.notificationSettingsIntent())
@@ -126,7 +129,7 @@ fun McpKeepAliveScreen(
                         description {
                             permissionLabel(permissions.batteryOptimizations)
                         }
-                        icon(R.drawable.ic_mcp_server)
+                        icon(R.drawable.ic_bolt)
                         onClick {
                             if (!permissions.batteryOptimizations) {
                                 settingsLauncher.launch(viewModel.batteryOptimizationIntent())
@@ -139,7 +142,7 @@ fun McpKeepAliveScreen(
                         description {
                             permissionLabel(permissions.overlay)
                         }
-                        icon(R.drawable.ic_mcp_server)
+                        icon(Icons.Rounded.Fullscreen)
                         onClick {
                             if (!permissions.overlay) {
                                 settingsLauncher.launch(viewModel.overlayPermissionIntent())

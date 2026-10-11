@@ -1,7 +1,5 @@
 package `in`.hridayan.ashell.ai.presentation.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,8 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.RadioButtonUnchecked
+import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -19,15 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import `in`.hridayan.ashell.ai.mcp.McpServerState
 import `in`.hridayan.ashell.core.resources.R
 
 /**
- * Status banner for the local MCP server: a tonal card carrying the lifecycle state, the
- * listening port, how many tools are exposed and whether keep-alive is on.
+ * Status banner for the local MCP server: a tonal card whose leading icon matches the
+ * lifecycle state, plus the listening port, the exposed tool count and whether keep-alive
+ * is on.
  */
 @Composable
 fun McpStatusCard(
@@ -40,6 +42,7 @@ fun McpStatusCard(
             container = scheme.primaryContainer,
             content = scheme.onPrimaryContainer,
             accent = scheme.primary,
+            icon = Icons.Rounded.CheckCircle,
             title = stringResource(R.string.mcp_status_running),
             subtitle = buildString {
                 append(
@@ -60,6 +63,7 @@ fun McpStatusCard(
             container = scheme.surfaceContainerHighest,
             content = scheme.onSurfaceVariant,
             accent = scheme.outline,
+            icon = Icons.Rounded.RadioButtonUnchecked,
             title = stringResource(R.string.mcp_status_stopped),
             subtitle = null
         )
@@ -68,6 +72,7 @@ fun McpStatusCard(
             container = scheme.errorContainer,
             content = scheme.onErrorContainer,
             accent = scheme.error,
+            icon = Icons.Rounded.Warning,
             title = stringResource(R.string.mcp_status_error, state.message),
             subtitle = null
         )
@@ -82,20 +87,12 @@ fun McpStatusCard(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    modifier = Modifier.size(26.dp),
-                    painter = painterResource(R.drawable.ic_mcp_server),
-                    contentDescription = null,
-                    tint = appearance.accent
-                )
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .size(9.dp)
-                        .background(appearance.accent, CircleShape)
-                )
-            }
+            Icon(
+                modifier = Modifier.size(26.dp),
+                imageVector = appearance.icon,
+                contentDescription = null,
+                tint = appearance.accent
+            )
 
             Spacer(modifier = Modifier.width(14.dp))
 
@@ -121,6 +118,7 @@ private data class StatusAppearance(
     val container: Color,
     val content: Color,
     val accent: Color,
+    val icon: ImageVector,
     val title: String,
     val subtitle: String?
 )

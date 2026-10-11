@@ -7,7 +7,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Link
+import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.PowerSettingsNew
+import androidx.compose.material.icons.rounded.Sync
+import androidx.compose.material.icons.rounded.Terminal
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -94,21 +102,21 @@ fun McpServerScreen(
                     switchItem(SettingsKeys.McpServerStreamableHttpEnabled) {
                         title(R.string.mcp_streamable_http)
                         description(R.string.des_mcp_streamable_http)
-                        icon(R.drawable.ic_mcp_server)
+                        icon(Icons.Rounded.Link)
                         visible { enabled }
                     }
 
                     switchItem(SettingsKeys.McpServerSseEnabled) {
                         title(R.string.mcp_sse)
                         description(R.string.des_mcp_sse)
-                        icon(R.drawable.ic_mcp_server)
+                        icon(Icons.Rounded.Sync)
                         visible { enabled }
                     }
 
                     clickableItem(SettingsKeys.McpKeepAlive) {
                         title(R.string.mcp_keep_alive)
                         description(R.string.des_mcp_keep_alive)
-                        icon(R.drawable.ic_mcp_server)
+                        icon(Icons.Rounded.PowerSettingsNew)
                         onClick { navController.navigate(NavRoutes.McpKeepAliveScreen) }
                     }
                 }
@@ -136,6 +144,12 @@ fun McpServerScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 15.dp, vertical = 4.dp),
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Tune,
+                                    contentDescription = null,
+                                )
+                            },
                             label = { Text(stringResource(R.string.mcp_port)) },
                             supportingText = { Text(stringResource(R.string.des_mcp_port)) },
                             singleLine = true,
@@ -153,6 +167,12 @@ fun McpServerScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 15.dp, vertical = 4.dp),
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Lock,
+                                    contentDescription = null,
+                                )
+                            },
                             label = { Text(stringResource(R.string.mcp_auth_token)) },
                             supportingText = {
                                 Text(stringResource(R.string.des_mcp_auth_token))
@@ -201,13 +221,13 @@ fun McpServerScreen(
                         switchItem(SettingsKeys.McpServerAllowLanAccess) {
                             title(R.string.mcp_allow_lan)
                             description(R.string.des_mcp_allow_lan)
-                            icon(R.drawable.ic_mcp_server)
+                            icon(R.drawable.ic_wifi_settings)
                         }
 
                         switchItem(SettingsKeys.McpServerAutoApproveCommands) {
                             title(R.string.mcp_auto_approve)
                             description(R.string.des_mcp_auto_approve)
-                            icon(R.drawable.ic_mcp_server)
+                            icon(Icons.Rounded.Terminal)
                         }
                     }
 
