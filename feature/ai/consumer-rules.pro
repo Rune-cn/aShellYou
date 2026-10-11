@@ -1,4 +1,12 @@
 # ─────────────────────────────────────────────────────────────────────────────
+# Ktor server (local MCP server) – JVM-only debug helpers
+# ─────────────────────────────────────────────────────────────────────────────
+# io.ktor.util.debug.IntellijIdeaDebugDetector references java.lang.management,
+# which does not exist on Android. R8 only needs to be told to ignore it.
+-dontwarn java.lang.management.**
+-dontwarn io.ktor.util.debug.**
+
+# ─────────────────────────────────────────────────────────────────────────────
 # AI Command Analysis – JNI bridge and serializable models
 # ─────────────────────────────────────────────────────────────────────────────
 -keep class in.hridayan.ashell.ai.native.LlamaCppBridge { *; }
