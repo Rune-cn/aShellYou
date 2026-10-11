@@ -9,6 +9,7 @@ internal object SettingsGraphId {
     const val BEHAVIOR = "behavior_graph"
     const val CLOUD_MODELS = "cloud_models_graph"
     const val MCP_SERVER = "mcp_server_graph"
+    const val MCP_KEEP_ALIVE = "mcp_keep_alive_graph"
     const val DARK_THEME = "dark_theme_graph"
     const val LOOK_AND_FEEL = "look_and_feel_graph"
     const val PRIVACY_SECURITY = "privacy_security_graph"

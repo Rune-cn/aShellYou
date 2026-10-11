@@ -44,6 +44,7 @@ class McpServerService : Service() {
     @Inject lateinit var commandExecutionManager: CommandExecutionManager
     @Inject lateinit var engine: McpServerEngine
     @Inject lateinit var sessions: McpSseSessionStore
+    @Inject lateinit var keepAliveManager: McpKeepAliveManager
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var server: EmbeddedServer<*, *>? = null
@@ -79,6 +80,8 @@ class McpServerService : Service() {
             built.start(wait = false)
             server = built
 
+            if (config.keepAlive) keepAliveManager.start()
+
             notify(buildNotification(port = config.port))
             controller.updateState(
                 McpServerState.Running(config, engine.exposedToolCount())
@@ -102,13 +105,16 @@ class McpServerService : Service() {
         sseEnabled = settingsRepository.getBoolean(SettingsKeys.McpServerSseEnabled)
             .firstOrNull() ?: true,
         autoApproveCommands = settingsRepository
-            .getBoolean(SettingsKeys.McpServerAutoApproveCommands).firstOrNull() ?: false
+            .getBoolean(SettingsKeys.McpServerAutoApproveCommands).firstOrNull() ?: false,
+        keepAlive = settingsRepository.getBoolean(SettingsKeys.McpServerKeepAlive)
+            .firstOrNull() ?: false
     )
 
     override fun onDestroy() {
         server?.stop(gracePeriodMillis = 500, timeoutMillis = 500)
         server = null
         sessions.clear()
+        keepAliveManager.stop()
         commandExecutionManager.autoApproveAll = false
         controller.updateState(McpServerState.Stopped)
         scope.cancel()

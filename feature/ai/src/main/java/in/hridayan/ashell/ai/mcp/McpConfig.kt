@@ -12,7 +12,8 @@ data class McpConfig(
     val allowLanAccess: Boolean,
     val streamableHttpEnabled: Boolean,
     val sseEnabled: Boolean,
-    val autoApproveCommands: Boolean
+    val autoApproveCommands: Boolean,
+    val keepAlive: Boolean
 ) {
     /**
      * Address the embedded server binds to. Binding to `127.0.0.1` keeps the server

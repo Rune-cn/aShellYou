@@ -134,6 +134,9 @@ sealed class NavRoutes {
     object McpServerScreen : NavRoutes()
 
     @Serializable
+    object McpKeepAliveScreen : NavRoutes()
+
+    @Serializable
     object GenerateColorSchemeScreen : NavRoutes()
 
     @Serializable

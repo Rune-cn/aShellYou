@@ -1438,4 +1438,20 @@ UI 小幅更改。</string>
     <string name="mcp_client_hint">把上面的端点填入你的 MCP 客户端（例如 Claude Desktop、Cursor 或 MCP Inspector）。服务端同时支持当前修订版（2026-07-28）与更早的版本。</string>
     <string name="mcp_running_notification_title">MCP 服务端运行中</string>
     <string name="mcp_running_notification_text" comment="%1$d is the TCP port">正在监听端口 %1$d</string>
+    <string name="mcp_status_summary" comment="Subtitle of the status card. %1$d is the port, %2$d the number of exposed tools">端口 %1$d · %2$d 个工具</string>
+    <string name="mcp_status_keep_alive_on" comment="Shown on the status card when keep-alive is enabled">保活已开启</string>
+    <string name="mcp_keep_alive" comment="Settings entry for keeping the MCP server alive">保活</string>
+    <string name="des_mcp_keep_alive" comment="Description under the keep-alive settings entry">让 MCP 服务端在后台持续运行，客户端不会掉线</string>
+    <string name="mcp_keep_alive_enabled">保活</string>
+    <string name="des_mcp_keep_alive_enabled">服务端运行期间持有唤醒锁并提升进程优先级</string>
+    <string name="mcp_keep_alive_permissions" comment="Header for the permissions keep-alive needs">需要的权限</string>
+    <string name="mcp_perm_notifications">通知权限</string>
+    <string name="des_mcp_perm_notifications">Android 13 及以上显示前台服务通知所必需</string>
+    <string name="mcp_perm_battery">忽略电池优化</string>
+    <string name="des_mcp_perm_battery">请求系统在息屏时不要杀掉服务端</string>
+    <string name="mcp_perm_overlay">显示在其他应用上层</string>
+    <string name="des_mcp_perm_overlay">用于在后台维持进程存活</string>
+    <string name="mcp_perm_granted">已授权</string>
+    <string name="mcp_perm_not_granted">未授权</string>
+    <string name="mcp_keep_alive_hint">这些权限都是可选的：不授权服务端也能正常工作，只是在后台可能更早被系统回收。</string>
 </resources>

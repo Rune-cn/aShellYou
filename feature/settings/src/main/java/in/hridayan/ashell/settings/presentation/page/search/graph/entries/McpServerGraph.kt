@@ -56,5 +56,29 @@ internal fun SearchScreenScope.mcpServerGraph(navController: NavController) {
             description(R.string.des_mcp_auto_approve)
             icon(R.drawable.ic_mcp_server)
         }
+
+        entry(key = SettingsKeys.McpKeepAlive) {
+            title(R.string.mcp_keep_alive)
+            description(R.string.des_mcp_keep_alive)
+            icon(R.drawable.ic_mcp_server)
+        }
+
+        mcpKeepAliveGraph(navController)
+    }
+}
+
+internal fun SearchScreenScope.mcpKeepAliveGraph(navController: NavController) {
+    screen(
+        id = SettingsGraphId.MCP_KEEP_ALIVE,
+        title = R.string.mcp_keep_alive,
+        navigate = {
+            navController.navigate(NavRoutes.McpKeepAliveScreen) { launchSingleTop = true }
+        },
+    ) {
+        entry(key = SettingsKeys.McpServerKeepAlive) {
+            title(R.string.mcp_keep_alive_enabled)
+            description(R.string.des_mcp_keep_alive_enabled)
+            icon(R.drawable.ic_mcp_server)
+        }
     }
 }

@@ -26,11 +26,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.hridayan.ashell.ai.mcp.McpServerState
+import `in`.hridayan.ashell.ai.presentation.components.McpStatusCard
 import `in`.hridayan.ashell.ai.presentation.viewmodel.McpServerViewModel
 import `in`.hridayan.ashell.core.common.settings.LocalSettings
 import `in`.hridayan.ashell.core.common.settings.SettingsKeys
 import `in`.hridayan.ashell.core.navigation.LocalNavController
+import `in`.hridayan.ashell.core.navigation.NavRoutes
 import `in`.hridayan.ashell.core.navigation.navigateBack
 import `in`.hridayan.ashell.core.presentation.components.scaffold.AppScaffold
 import `in`.hridayan.ashell.core.resources.R
@@ -103,30 +104,21 @@ fun McpServerScreen(
                         icon(R.drawable.ic_mcp_server)
                         visible { enabled }
                     }
+
+                    clickableItem(SettingsKeys.McpKeepAlive) {
+                        title(R.string.mcp_keep_alive)
+                        description(R.string.des_mcp_keep_alive)
+                        icon(R.drawable.ic_mcp_server)
+                        onClick { navController.navigate(NavRoutes.McpKeepAliveScreen) }
+                    }
                 }
 
                 if (enabled) {
                     item(key = "mcp_status") {
-                        SectionBlock(title = stringResource(R.string.mcp_server_status)) {
-                            Text(
-                                text = when (val state = serverState) {
-                                    is McpServerState.Running ->
-                                        stringResource(R.string.mcp_status_running)
-
-                                    is McpServerState.Stopped ->
-                                        stringResource(R.string.mcp_status_stopped)
-
-                                    is McpServerState.Failed ->
-                                        stringResource(R.string.mcp_status_error, state.message)
-                                },
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = if (serverState is McpServerState.Failed) {
-                                    MaterialTheme.colorScheme.error
-                                } else {
-                                    MaterialTheme.colorScheme.onSurface
-                                },
-                            )
-                        }
+                        McpStatusCard(
+                            state = serverState,
+                            modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp)
+                        )
                     }
 
                     item(key = "mcp_port") {
@@ -261,14 +253,6 @@ private fun SectionHeader(text: String) {
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 8.dp),
     )
-}
-
-@Composable
-private fun SectionBlock(title: String, content: @Composable () -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        SectionHeader(title)
-        content()
-    }
 }
 
 @Composable

@@ -55,6 +55,7 @@ sealed class SettingsKeys<out T>(
     data object Licenses : SettingsKeys<Nothing?>("LICENSES", null)
     data object LookAndFeel : SettingsKeys<Nothing?>("LOOK_AND_FEEL", null)
     data object McpServer : SettingsKeys<Nothing?>("MCP_SERVER", null)
+    data object McpKeepAlive : SettingsKeys<Nothing?>("MCP_KEEP_ALIVE", null)
     data object PrivacyAndSecurity : SettingsKeys<Nothing?>("PRIVACY_AND_SECURITY", null)
     data object PrivacyPolicy : SettingsKeys<Nothing?>("PRIVACY_POLICY", null)
     data object TermsOfService : SettingsKeys<Nothing?>("TERMS_OF_SERVICE", null)
@@ -85,6 +86,8 @@ sealed class SettingsKeys<out T>(
     data object McpServerAllowLanAccess : SettingsKeys<Boolean>("MCP_SERVER_ALLOW_LAN_ACCESS", false)
     data object McpServerAutoApproveCommands :
         SettingsKeys<Boolean>("MCP_SERVER_AUTO_APPROVE_COMMANDS", false)
+
+    data object McpServerKeepAlive : SettingsKeys<Boolean>("MCP_SERVER_KEEP_ALIVE", false)
     data object AutoBackupCloudEnabled : SettingsKeys<Boolean>("AUTO_BACKUP_CLOUD_ENABLED", true)
     data object AutoBackupDeleteExisting :
         SettingsKeys<Boolean>("AUTO_BACKUP_DELETE_EXISTING", true)
