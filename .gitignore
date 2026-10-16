@@ -25,3 +25,6 @@ signing-foss.properties
 !README.md
 !SECURITY.md
 !TERMS_OF_SERVICE.md
+
+# Local scratch files used while working on the MCP feature
+runs.json
