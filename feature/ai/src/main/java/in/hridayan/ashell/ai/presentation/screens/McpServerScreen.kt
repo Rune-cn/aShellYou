@@ -30,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import `in`.hridayan.ashell.ai.presentation.components.McpEndpointCard
@@ -125,6 +124,7 @@ fun McpServerScreen(
                     item(key = "mcp_status") {
                         McpStatusCard(
                             state = serverState,
+                            exposedTools = exposedTools,
                             modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp)
                         )
                     }
@@ -235,24 +235,6 @@ fun McpServerScreen(
                         item(key = "mcp_lan_hint") {
                             HintText(stringResource(R.string.mcp_lan_hint))
                         }
-                    }
-
-                    item(key = "mcp_tools_header") {
-                        SectionHeader(stringResource(R.string.mcp_exposed_tools))
-                    }
-
-                    item(key = "mcp_tools") {
-                        Text(
-                            text = if (exposedTools.isEmpty()) {
-                                stringResource(R.string.mcp_no_tools)
-                            } else {
-                                exposedTools.joinToString(separator = "\n")
-                            },
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(horizontal = 15.dp, vertical = 4.dp),
-                        )
                     }
                 }
 

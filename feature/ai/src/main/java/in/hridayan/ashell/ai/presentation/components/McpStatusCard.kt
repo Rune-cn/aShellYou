@@ -34,6 +34,7 @@ import `in`.hridayan.ashell.core.resources.R
 @Composable
 fun McpStatusCard(
     state: McpServerState,
+    exposedTools: List<String>,
     modifier: Modifier = Modifier
 ) {
     val scheme = MaterialTheme.colorScheme
@@ -44,19 +45,8 @@ fun McpStatusCard(
             accent = scheme.primary,
             icon = Icons.Rounded.CheckCircle,
             title = stringResource(R.string.mcp_status_running),
-            subtitle = buildString {
-                append(
-                    stringResource(
-                        R.string.mcp_status_summary,
-                        state.config.port,
-                        state.exposedToolCount
-                    )
-                )
-                if (state.config.keepAlive) {
-                    append(" · ")
-                    append(stringResource(R.string.mcp_status_keep_alive_on))
-                }
-            }
+            subtitle = exposedTools.joinToString(", ")
+                .ifEmpty { stringResource(R.string.mcp_no_tools_short) }
         )
 
         is McpServerState.Stopped -> StatusAppearance(

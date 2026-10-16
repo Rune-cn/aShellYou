@@ -1420,7 +1420,8 @@
     <string name="mcp_endpoint_messages" comment="Label for the SSE message endpoint URL">SSE message endpoint</string>
     <string name="mcp_lan_hint">LAN access is enabled. Replace 127.0.0.1 with this device\'s LAN IP address in the URLs above.</string>
     <string name="mcp_exposed_tools" comment="Header listing the tools exposed over MCP">Exposed tools</string>
-    <string name="mcp_no_tools">No tools are exposed yet. Enable agent skills under AI &amp; Models to expose them over MCP.</string>
+    <string name="mcp_no_tools" comment="Shown when no tools are exposed over MCP">No tools are exposed yet. Enable agent skills under AI &amp; Models to expose them over MCP.</string>
+    <string name="mcp_no_tools_short" comment="Short subtitle shown on the status card when no tools are exposed">No tools</string>
     <string name="mcp_client_hint">Add one of the endpoints above to your MCP client (for example Claude Desktop, Cursor, or MCP Inspector). The server speaks both the current revision (2026-07-28) and older ones.</string>
     <string name="mcp_running_notification_title">MCP server running</string>
     <string name="mcp_running_notification_text" comment="%1$d is the TCP port">Listening on port %1$d</string>

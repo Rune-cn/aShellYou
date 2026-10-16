@@ -1435,6 +1435,7 @@ UI 小幅更改。</string>
     <string name="mcp_lan_hint">已开启局域网访问，请把上面 URL 中的 127.0.0.1 换成本机的局域网 IP。</string>
     <string name="mcp_exposed_tools" comment="Header listing the tools exposed over MCP">已暴露的工具</string>
     <string name="mcp_no_tools">暂未暴露任何工具。请在「AI &amp; Models」中开启对应的智能代理技能。</string>
+    <string name="mcp_no_tools_short" comment="Short subtitle shown on the status card when no tools are exposed">无工具</string>
     <string name="mcp_client_hint">把上面的端点填入你的 MCP 客户端（例如 Claude Desktop、Cursor 或 MCP Inspector）。服务端同时支持当前修订版（2026-07-28）与更早的版本。</string>
     <string name="mcp_running_notification_title">MCP 服务端运行中</string>
     <string name="mcp_running_notification_text" comment="%1$d is the TCP port">正在监听端口 %1$d</string>

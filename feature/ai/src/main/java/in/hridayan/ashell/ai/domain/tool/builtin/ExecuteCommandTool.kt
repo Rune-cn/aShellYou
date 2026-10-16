@@ -17,6 +17,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -48,6 +49,10 @@ class ExecuteCommandTool @Inject constructor(
             "local_adb_mode" to ToolSchemaProperty(
                 type = ToolSchemaType.STRING,
                 description = "If target_mode is 'LOCAL', you can explicitly override the local ADB working mode to use: 'ROOT', 'SHIZUKU', 'TCPIP', or 'BASIC'. If omitted, it will use the user's currently selected default mode."
+            ),
+            "timeout_ms" to ToolSchemaProperty(
+                type = ToolSchemaType.INTEGER,
+                description = "How long to collect output before the command is stopped, in milliseconds. Defaults to 15000 and is clamped to 1000..60000. Use a small value for continuous commands such as 'ping', 'logcat' or 'top'."
             )
         ),
         required = listOf("command")
@@ -58,6 +63,15 @@ class ExecuteCommandTool @Inject constructor(
             ?: return """{"error": "command is required"}"""
         val targetMode = args.get("target_mode")?.jsonPrimitive?.content?.uppercase() ?: "LOCAL"
         val localAdbModeStr = args.get("local_adb_mode")?.jsonPrimitive?.content?.uppercase()
+
+        // Continuous commands (ping, logcat, top, ...) never finish on their own, so output
+        // collection is always bounded. Callers may tune the window per call.
+        val timeoutMs = args.get("timeout_ms")
+            ?.jsonPrimitive
+            ?.contentOrNull
+            ?.toLongOrNull()
+            ?.coerceIn(MIN_TIMEOUT_MS, MAX_TIMEOUT_MS)
+            ?: DEFAULT_TIMEOUT_MS
 
         // Request permission
         val permissionResult = commandExecutionManager.requestPermission(command)
@@ -113,7 +127,7 @@ class ExecuteCommandTool @Inject constructor(
 
             val outputBuilder = StringBuilder()
 
-            val timeoutResult = withTimeoutOrNull(15000.milliseconds) {
+            val timeoutResult = withTimeoutOrNull(timeoutMs.milliseconds) {
                 outputFlow.collect { line ->
                     if (isCancelled) {
                         when (targetMode) {
@@ -134,7 +148,10 @@ class ExecuteCommandTool @Inject constructor(
                     "WIRELESS" -> aiConnectionStateProvider.stopWifiCommand()
                     else -> shellRepository.stopCommand()
                 }
-                outputBuilder.appendLine("\n<Command execution timed out after 15s. Process stopped.>")
+                outputBuilder.appendLine(
+                    "\n<Output collection stopped after ${timeoutMs / 1000}s. " +
+                        "The process was stopped; the output above is partial.>"
+                )
             }
 
             if (isCancelled) {
@@ -151,5 +168,12 @@ class ExecuteCommandTool @Inject constructor(
         } finally {
             commandExecutionManager.removeRunningTask(taskId)
         }
+    }
+
+    private companion object {
+        /** Long enough for most one-shot commands, short enough to bound continuous ones. */
+        const val DEFAULT_TIMEOUT_MS = 15_000L
+        const val MIN_TIMEOUT_MS = 1_000L
+        const val MAX_TIMEOUT_MS = 60_000L
     }
 }
