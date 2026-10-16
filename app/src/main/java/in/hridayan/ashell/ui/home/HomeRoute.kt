@@ -89,9 +89,6 @@ fun HomeRoute(
         onLogcatClick = {
             navController.navigate(NavRoutes.LogcatScreen)
         },
-        onAiChatClick = {
-            navController.navigate(NavRoutes.AiChatScreen)
-        },
         onReboot = { cmd ->
             homeViewModel.reboot(cmd)
         },

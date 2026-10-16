@@ -36,7 +36,6 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,7 +57,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import `in`.hridayan.ashell.core.common.FeatureConfig
 import `in`.hridayan.ashell.core.common.LocalDialogManager
 import `in`.hridayan.ashell.core.common.domain.model.localadb.LocalAdbWorkingMode
 import `in`.hridayan.ashell.core.presentation.components.button.IconWithTextButton
@@ -91,7 +89,6 @@ fun HomeScreen(
     onSettingsClick: () -> Unit = {},
     onLocalAdbClick: () -> Unit = {},
     onLogcatClick: () -> Unit = {},
-    onAiChatClick: () -> Unit = {},
     onSideloadClick: () -> Unit = {},
     onReboot: (Array<String>) -> Unit = {}
 ) {
@@ -155,28 +152,6 @@ fun HomeScreen(
                 }
             )
         },
-        floatingActionButton = {
-            if (FeatureConfig.isAiEnabled) {
-                FloatingActionButton(
-                    modifier = Modifier.padding(bottom = 20.dp),
-                    onClick = withHaptic { onAiChatClick() },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    shape = RoundedCornerShape(
-                        topStartPercent = 50,
-                        topEndPercent = 50,
-                        bottomStartPercent = 50,
-                        bottomEndPercent = 5
-                    )
-                ) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        painter = painterResource(R.drawable.ic_help),
-                        contentDescription = stringResource(R.string.adb_agent)
-                    )
-                }
-            }
-        }
     ) {
         LazyColumn(
             modifier = Modifier

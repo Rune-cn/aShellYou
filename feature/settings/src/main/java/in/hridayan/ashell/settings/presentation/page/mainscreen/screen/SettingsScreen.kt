@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -43,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import `in`.hridayan.ashell.core.common.FeatureConfig
 import `in`.hridayan.ashell.core.common.settings.LocalSettings
 import `in`.hridayan.ashell.core.common.settings.SettingsKeys
 import `in`.hridayan.ashell.core.navigation.LocalNavController
@@ -198,13 +195,12 @@ fun SettingsScreen() {
                     onClick { navController.navigate(NavRoutes.TileDashboardScreen) }
                 }
 
-                clickableItem(SettingsKeys.CloudModels) {
-                    title(R.string.ai_models)
-                    description(R.string.des_ai_models)
-                    icon(Icons.Outlined.AutoAwesome)
+                clickableItem(SettingsKeys.McpServer) {
+                    title(R.string.mcp_server)
+                    description(R.string.des_mcp_server)
+                    icon(R.drawable.ic_mcp_server)
                     iconColors { tertiaryIconColors }
-                    visible { FeatureConfig.isAiEnabled }
-                    onClick { navController.navigate(NavRoutes.AiModelsScreen) }
+                    onClick { navController.navigate(NavRoutes.McpServerScreen) }
                 }
             }
 

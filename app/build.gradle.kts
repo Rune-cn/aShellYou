@@ -98,7 +98,11 @@ android {
     productFlavors {
         create(flavorGitHub) {
             dimension = "distribution"
-            buildConfigField("Boolean", "AI_FEATURES_ENABLED", "true")
+            // The in-app LLM assistant is intentionally off: this build is meant to expose the
+            // device to external MCP clients instead. It also hides every AI-chat entry point
+            // (settings tab, device dock action, command cards). The local MCP server lives in
+            // :feature:ai and keeps working regardless.
+            buildConfigField("Boolean", "AI_FEATURES_ENABLED", "false")
         }
         create(flavorFDroid) {
             dimension = "distribution"

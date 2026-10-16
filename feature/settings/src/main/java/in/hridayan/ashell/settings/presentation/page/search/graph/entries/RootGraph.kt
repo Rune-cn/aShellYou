@@ -4,7 +4,7 @@ import `in`.hridayan.ashell.core.common.settings.SettingsKeys
 import `in`.hridayan.ashell.core.resources.R
 import `in`.hridayan.settingsgraph.search.SearchScreenScope
 
-internal fun SearchScreenScope.rootGraph(aiEnabled: Boolean) {
+internal fun SearchScreenScope.rootGraph() {
     entry(key = SettingsKeys.LookAndFeel) {
         title(R.string.look_and_feel)
         description(R.string.des_look_and_feel)
@@ -23,11 +23,10 @@ internal fun SearchScreenScope.rootGraph(aiEnabled: Boolean) {
         icon(R.drawable.ic_dashboard)
     }
 
-    entry(key = SettingsKeys.CloudModels) {
-        title(R.string.ai_models)
-        description(R.string.des_ai_models)
-        icon(R.drawable.ic_cloud_model)
-        availableWhen(aiEnabled)
+    entry(key = SettingsKeys.McpServer) {
+        title(R.string.mcp_server)
+        description(R.string.des_mcp_server)
+        icon(R.drawable.ic_mcp_server)
     }
 
     entry(key = SettingsKeys.AutoUpdate) {

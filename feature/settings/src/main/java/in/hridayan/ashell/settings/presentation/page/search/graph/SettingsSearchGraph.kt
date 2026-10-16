@@ -6,7 +6,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import `in`.hridayan.ashell.core.common.FeatureConfig
 import `in`.hridayan.ashell.core.common.domain.model.AuthenticationTimeout
 import `in`.hridayan.ashell.core.common.settings.LocalSettings
 import `in`.hridayan.ashell.core.common.settings.SettingsKeys
@@ -15,7 +14,7 @@ import `in`.hridayan.ashell.core.resources.R
 import `in`.hridayan.ashell.settings.presentation.model.logcatBufferSizeLabel
 import `in`.hridayan.ashell.settings.presentation.page.search.graph.constants.SettingsGraphId
 import `in`.hridayan.ashell.settings.presentation.page.search.graph.entries.aboutGraph
-import `in`.hridayan.ashell.settings.presentation.page.search.graph.entries.aiModelsGraph
+import `in`.hridayan.ashell.settings.presentation.page.search.graph.entries.mcpServerGraph
 import `in`.hridayan.ashell.settings.presentation.page.search.graph.entries.autoUpdateGraph
 import `in`.hridayan.ashell.settings.presentation.page.search.graph.entries.backupAndRestoreGraph
 import `in`.hridayan.ashell.settings.presentation.page.search.graph.entries.behaviorGraph
@@ -37,12 +36,10 @@ import `in`.hridayan.settingsgraph.search.searchGraph
 @Composable
 fun rememberSettingsSearchGraph(navController: NavController): SearchGraph {
     val settings = LocalSettings.current
-    val aiEnabled = FeatureConfig.isAiEnabled
     val supportsDynamicColor = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     val dynamicColorEnabled = settings[SettingsKeys.DynamicColors]
     val customSchemeApplied = settings[SettingsKeys.UserGeneratedColorSchemeApplied]
-    val aiCacheEnabled = settings[SettingsKeys.AiCacheEnabled]
     val requireAuth = settings[SettingsKeys.RequireAuthentication]
     val currentTimeout = settings[SettingsKeys.AuthenticationTimeout]
     val bufferLimit = settings[SettingsKeys.LogcatBufferLimit]
@@ -52,11 +49,9 @@ fun rememberSettingsSearchGraph(navController: NavController): SearchGraph {
 
     return remember(
         navController,
-        aiEnabled,
         supportsDynamicColor,
         dynamicColorEnabled,
         customSchemeApplied,
-        aiCacheEnabled,
         requireAuth,
         currentTimeout,
         bufferLimit
@@ -71,7 +66,7 @@ fun rememberSettingsSearchGraph(navController: NavController): SearchGraph {
                     }
                 },
             ) {
-                rootGraph(aiEnabled = aiEnabled)
+                rootGraph()
 
                 lookAndFeelGraph(
                     navController = navController,
@@ -82,11 +77,7 @@ fun rememberSettingsSearchGraph(navController: NavController): SearchGraph {
 
                 behaviorGraph(navController = navController, bufferLimitText = bufferLimitText)
 
-                aiModelsGraph(
-                    navController = navController,
-                    aiEnabled = aiEnabled,
-                    aiCacheEnabled = aiCacheEnabled
-                )
+                mcpServerGraph(navController = navController)
 
                 autoUpdateGraph(navController = navController)
 
