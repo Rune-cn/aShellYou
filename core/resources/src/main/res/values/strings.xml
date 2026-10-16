@@ -1393,53 +1393,53 @@
 
     <!-- Local MCP server -->
     <string name="mcp_server" comment="Settings item title for the local MCP server">MCP Server</string>
-    <string name="des_mcp_server" comment="Settings item description for the local MCP server">Expose on-device shell tools so MCP clients (Claude Desktop, Cursor, …) can call them</string>
+    <string name="des_mcp_server" comment="Settings item description for the local MCP server">Expose shell tools to MCP clients</string>
     <string name="mcp_server_enabled" comment="Toggle title to enable the local MCP server">Enable MCP server</string>
-    <string name="des_mcp_server_enabled" comment="Toggle description for enabling the local MCP server">Run a local Model Context Protocol server in the background</string>
+    <string name="des_mcp_server_enabled" comment="Toggle description for enabling the local MCP server">Run the local MCP server in the background</string>
     <string name="mcp_server_status" comment="Shows whether the MCP server is running">Status</string>
     <string name="mcp_status_running">Running</string>
     <string name="mcp_status_stopped">Stopped</string>
     <string name="mcp_status_error" comment="Shown when the MCP server failed to start. %1$s is the error message.">Failed to start: %1$s</string>
     <string name="mcp_transport" comment="Header for MCP transport options">Transports</string>
     <string name="mcp_streamable_http">Streamable HTTP</string>
-    <string name="des_mcp_streamable_http">Single HTTP endpoint at /mcp. Stateless, no handshake — the standard transport since MCP 2026-07-28</string>
+    <string name="des_mcp_streamable_http">Standard transport: one /mcp endpoint</string>
     <string name="mcp_sse">HTTP + SSE</string>
-    <string name="des_mcp_sse">Deprecated /sse and /messages endpoints, kept so older clients (2024-11-05) still work</string>
+    <string name="des_mcp_sse">Deprecated, kept for older clients</string>
     <string name="mcp_port" comment="Label for the MCP server TCP port">Port</string>
-    <string name="des_mcp_port">TCP port the MCP server listens on</string>
+    <string name="des_mcp_port">Port the server listens on</string>
     <string name="mcp_auth_token" comment="Label for the optional bearer token">Bearer token</string>
-    <string name="des_mcp_auth_token">Optional token clients must send in the Authorization header. Leave empty to disable authentication.</string>
+    <string name="des_mcp_auth_token">Clients must send it in the Authorization header</string>
     <string name="mcp_allow_lan">Allow LAN access</string>
-    <string name="des_mcp_allow_lan">Bind to all network interfaces so other devices on your network can connect. Otherwise only this device (localhost) can connect.</string>
+    <string name="des_mcp_allow_lan">Let other devices on your network connect</string>
     <string name="mcp_auto_approve">Auto-approve shell commands</string>
-    <string name="des_mcp_auto_approve">Execute commands requested over MCP without asking for confirmation. Only enable this for clients you trust.</string>
+    <string name="des_mcp_auto_approve">Run MCP commands without confirmation</string>
     <string name="mcp_security" comment="Header for MCP security options">Security</string>
     <string name="mcp_connection" comment="Header for MCP connection details">Connection</string>
     <string name="mcp_endpoint_streamable_http" comment="Label for the Streamable HTTP endpoint URL">Streamable HTTP endpoint</string>
     <string name="mcp_endpoint_sse" comment="Label for the SSE endpoint URL">SSE endpoint</string>
     <string name="mcp_endpoint_messages" comment="Label for the SSE message endpoint URL">SSE message endpoint</string>
-    <string name="mcp_lan_hint">LAN access is enabled. Replace 127.0.0.1 with this device\'s LAN IP address in the URLs above.</string>
+    <string name="mcp_lan_hint">Replace 127.0.0.1 with this device's LAN IP.</string>
     <string name="mcp_exposed_tools" comment="Header listing the tools exposed over MCP">Exposed tools</string>
-    <string name="mcp_no_tools" comment="Shown when no tools are exposed over MCP">No tools are exposed yet. Enable agent skills under AI &amp; Models to expose them over MCP.</string>
+    <string name="mcp_no_tools" comment="Shown when no tools are exposed over MCP">No tools are exposed.</string>
     <string name="mcp_no_tools_short" comment="Short subtitle shown on the status card when no tools are exposed">No tools</string>
-    <string name="mcp_client_hint">Add one of the endpoints above to your MCP client (for example Claude Desktop, Cursor, or MCP Inspector). The server speaks both the current revision (2026-07-28) and older ones.</string>
+    <string name="mcp_client_hint">Add an endpoint above to your MCP client (Claude Desktop, Cursor, …).</string>
     <string name="mcp_running_notification_title">MCP server running</string>
     <string name="mcp_running_notification_text" comment="%1$d is the TCP port">Listening on port %1$d</string>
     <string name="mcp_status_summary" comment="Subtitle of the status card. %1$d is the port, %2$d the number of exposed tools">Port %1$d · %2$d tools</string>
     <string name="mcp_status_keep_alive_on" comment="Shown on the status card when keep-alive is enabled">Keep alive on</string>
     <string name="mcp_copy" comment="Content description of the copy button on MCP endpoint cards">Copy</string>
     <string name="mcp_keep_alive" comment="Settings entry for keeping the MCP server alive">Keep alive</string>
-    <string name="des_mcp_keep_alive" comment="Description under the keep-alive settings entry">Keep the MCP server running in the background so clients stay connected</string>
+    <string name="des_mcp_keep_alive" comment="Description under the keep-alive settings entry">Stay running in the background</string>
     <string name="mcp_keep_alive_enabled">Keep alive</string>
-    <string name="des_mcp_keep_alive_enabled">Hold a wake lock and raise the process priority while the server runs</string>
+    <string name="des_mcp_keep_alive_enabled">Hold a wake lock and raise the process priority</string>
     <string name="mcp_keep_alive_permissions" comment="Header for the permissions keep-alive needs">Required permissions</string>
     <string name="mcp_perm_notifications">Notification permission</string>
-    <string name="des_mcp_perm_notifications">Needed to show the foreground service notification on Android 13 and newer</string>
+    <string name="des_mcp_perm_notifications">Needed for the foreground service notification</string>
     <string name="mcp_perm_battery">Ignore battery optimizations</string>
-    <string name="des_mcp_perm_battery">Ask the system not to kill the server while the screen is off</string>
+    <string name="des_mcp_perm_battery">Keep the server alive with the screen off</string>
     <string name="mcp_perm_overlay">Display over other apps</string>
-    <string name="des_mcp_perm_overlay">Used to keep the process alive in the background</string>
+    <string name="des_mcp_perm_overlay">Used to keep the process alive</string>
     <string name="mcp_perm_granted">Granted</string>
     <string name="mcp_perm_not_granted">Not granted</string>
-    <string name="mcp_keep_alive_hint">These permissions are all optional. The server keeps working without them, it may just be stopped sooner in the background.</string>
+    <string name="mcp_keep_alive_hint">All optional — without them the server may be stopped sooner.</string>
 </resources>
