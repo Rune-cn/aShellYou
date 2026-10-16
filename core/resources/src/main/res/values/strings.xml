@@ -1418,7 +1418,7 @@
     <string name="mcp_endpoint_streamable_http" comment="Label for the Streamable HTTP endpoint URL">Streamable HTTP endpoint</string>
     <string name="mcp_endpoint_sse" comment="Label for the SSE endpoint URL">SSE endpoint</string>
     <string name="mcp_endpoint_messages" comment="Label for the SSE message endpoint URL">SSE message endpoint</string>
-    <string name="mcp_lan_hint">Replace 127.0.0.1 with this device's LAN IP.</string>
+    <string name="mcp_lan_hint">Replace 127.0.0.1 with your LAN IP.</string>
     <string name="mcp_exposed_tools" comment="Header listing the tools exposed over MCP">Exposed tools</string>
     <string name="mcp_no_tools" comment="Shown when no tools are exposed over MCP">No tools are exposed.</string>
     <string name="mcp_no_tools_short" comment="Short subtitle shown on the status card when no tools are exposed">No tools</string>
